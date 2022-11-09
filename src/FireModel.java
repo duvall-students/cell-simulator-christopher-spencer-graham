@@ -38,6 +38,11 @@ public class FireModel {
 		assert(forest!=null);
 		return forest[0].length;
 	}
+	
+	public Color getState(Point position){
+		assert(forest!=null);
+		return forest[position.x][position.y];
+	}
 
 	/*
 	 * Check to see if the square is inside the outer walls of the maze
@@ -99,11 +104,7 @@ public class FireModel {
 		return treeNeighbors;
 	}
 	
-	public void treeBurntDown(Point treePosition) {
-		forest[treePosition.x][treePosition.y] = BURNT_DOWN_TREE;
-	}
-	
-	public void treeBurning(Point treePosition) {
-		forest[treePosition.x][treePosition.y] = BURNING_TREE;
+	public void treeChangeState(Point treePosition, Color newState) {
+		forest[treePosition.x][treePosition.y] = newState;
 	}
 }
