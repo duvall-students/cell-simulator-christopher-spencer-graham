@@ -17,7 +17,7 @@ public class FireModel {
 	private static Double FOREST_DENSITY = 1.0;
 	private static Double SPREAD_PROBABILITY = 0.4;
 	private static Double BURN_TIME = 1.0;
-	private static int NUMBER_BURNING_TREES = 1;
+	private static int NUMBER_INITIAL_BURNING_TREES = 1;
 	List<Point> treePositions;
 	Collection<Point> treeNeighbors;
 
@@ -55,20 +55,6 @@ public class FireModel {
 		return (p!=null && p.x < forest.length && p.x >= 0 && p.y < forest[0].length && p.y >= 0);
 	}
 
-	/* 
-	 * 
-	 * 
-	 * 
-	 * Remaining code is from "Introduction to Programming Using Java" by Eck.
-	 *
-	 *
-	 *
-	 */
-	/*
-	 * Create a new random maze of the given dimensions and store the result.
-	 * Maze has no cycles.
-	 */
-
 	public void createForest(int rows, int cols) {
 		assert(rows > 0 && cols > 0);
 		forest = new Color[rows][cols];
@@ -95,7 +81,7 @@ public class FireModel {
 	public void	assignBurningTrees() {
 		int numberOfTrees = treePositions.size();
 		int numberOfTreesChanged = 0;
-		while (numberOfTreesChanged < numberOfTrees) {
+		while (numberOfTreesChanged < NUMBER_INITIAL_BURNING_TREES) {
 			int burningTree = rand.nextInt(numberOfTrees);
 			Point newBurningTree = treePositions.get(burningTree);
 			if (forest[newBurningTree.x][newBurningTree.y] !=  BURNING_TREE) {
@@ -111,5 +97,13 @@ public class FireModel {
 		treeNeighbors.add(new Point(treePosition.x,treePosition.y+1));
 		treeNeighbors.add(new Point(treePosition.x,treePosition.y-1));
 		return treeNeighbors;
+	}
+	
+	public void treeBurntDown(Point treePosition) {
+		forest[treePosition.x][treePosition.y] = BURNT_DOWN_TREE;
+	}
+	
+	public void treeBurning(Point treePosition) {
+		forest[treePosition.x][treePosition.y] = BURNING_TREE;
 	}
 }
