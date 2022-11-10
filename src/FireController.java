@@ -1,3 +1,4 @@
+import java.awt.Point;
 
 public class FireController {
 
@@ -22,6 +23,12 @@ public class FireController {
 		
 	}
 	
-	
+	public void doOneStep() {
+		for(int x = 0; x <= fireModel.getNumRows(); x++) {
+			for(int y = 0; y <= fireModel.getNumCols(); y++) {
+				fireModel.getState(new Point(x,y)).act();
+			}
+		}
+	}
 	
 }

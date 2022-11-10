@@ -1,3 +1,4 @@
+
 import java.awt.Point;
 
 
@@ -15,7 +16,7 @@ import javafx.scene.shape.Rectangle;
 import javafx.stage.Stage;
 import javafx.util.Duration;
 
-public class View {
+public class ForestDisplay {
 	/*
 	 * GUI settings
 	 */
@@ -234,4 +235,5 @@ public class View {
 	public static void main(String[] args) {
 		launch(args);
 	}
+
 }
