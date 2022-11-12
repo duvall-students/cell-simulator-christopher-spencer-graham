@@ -10,17 +10,23 @@ public class BurningState extends CellState {
 
 
 	
-	public BurningState(FireModel fireModel, FireController fireController) {
-		super(Color.RED, fireModel, fireController);
+	private static final Color RED = Color.RED;
+	private double burnStart;
 
-		
+	public BurningState(FireModel fireModel, FireController fireController, double burnStart) {
+		super(RED, fireModel, fireController);
+		this.burnStart = burnStart;
 	}
 
 	
 	@Override
-	public CellState act(Point myPosition) {
-		// TODO Auto-generated method stub
-		return null;
+	public CellState act(Point myPosition, double elapsedTime) {
+		this.color = RED;
+		if(fireController.getBurnTime() == elapsedTime - burnStart) {
+			return new DeadTreeState(fireModel, fireController);
+		}
+		
+		return this;
 	}
 
 

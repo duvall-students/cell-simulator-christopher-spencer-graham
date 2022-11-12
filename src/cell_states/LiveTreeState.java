@@ -19,7 +19,7 @@ public class LiveTreeState extends CellState {
 	}
 
 	@Override
-	public CellState act(Point myPosition) {
+	public CellState act(Point myPosition, double elapsedTime) {
 		Random random = new Random();
 		this.color = GREEN;
 		Collection<Point> neighbors = getNeighbors(myPosition);
@@ -33,7 +33,7 @@ public class LiveTreeState extends CellState {
 			}
 			if(possibleBurningState != null) {
 				if(fireController.getBurnProbability() < random.nextDouble()) {
-					return new BurningState(fireModel, fireController);
+					return new BurningState(fireModel, fireController, elapsedTime);
 				}
 			}
 		}
