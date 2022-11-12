@@ -9,6 +9,7 @@ import cell_states.EdgeCellState;
 import cell_states.GroundCellState;
 import cell_states.LiveTreeState;
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
@@ -31,8 +32,10 @@ public class FireModel {
 
 	public FireModel(int rows, int columns, double forestDensity, int numBurningTrees, FireController fireController){
 		assert(rows > 0 && columns > 0);
-		createForest(rows, columns);
+		treePositions = new ArrayList<>();
 		this.fireController = fireController;
+		createForest(rows, columns);
+		
 	}
 
 	public int getNumRows(){
@@ -96,7 +99,7 @@ public class FireModel {
 			int burningTree = rand.nextInt(numberOfTrees);
 			Point newBurningTree = treePositions.get(burningTree);
 			if (!(forest[newBurningTree.x][newBurningTree.y] instanceof BurningState)) {
-				forest[newBurningTree.x][newBurningTree.y] = new BurningState(this, fireController);
+				forest[newBurningTree.x][newBurningTree.y] = new BurningState(this, fireController, 0);
 				numberOfTreesChanged++;
 			}
 		}

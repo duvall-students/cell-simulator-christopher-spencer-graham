@@ -26,7 +26,7 @@ public abstract class CellState {
 	 * @param myPosition
 	 * @return CellState by default it returns itself
 	 */
-	public CellState act(Point myPosition) {
+	public CellState act(Point myPosition, double elapsedTime) {
 		return this;
 	}
 	

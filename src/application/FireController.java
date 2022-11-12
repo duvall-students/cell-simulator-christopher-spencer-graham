@@ -21,7 +21,9 @@ public class FireController {
 		fireModel.createForest(fireModel.getNumRows(), fireModel.getNumCols());
 	}
 	
-	
+	public double getBurnTime() {
+		return burnTime;
+	}
 	public void newSimulation() {
 		
 	}
@@ -33,11 +35,11 @@ public class FireController {
 		return spreadProb;
 	}
 	
-	public void doOneStep() {
+	public void doOneStep(double elapsedTime) {
 		for(int x = 0; x <= fireModel.getNumRows(); x++) {
 			for(int y = 0; y <= fireModel.getNumCols(); y++) {
 				Point cellPosition = new Point(x,y);
-				fireModel.treeChangeState(cellPosition, fireModel.getState(cellPosition).act(cellPosition));
+				fireModel.treeChangeState(cellPosition, fireModel.getState(cellPosition).act(cellPosition, elapsedTime));
 			}
 		}
 	}
