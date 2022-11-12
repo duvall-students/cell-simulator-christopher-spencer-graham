@@ -9,6 +9,7 @@ import javafx.geometry.Pos;
 import javafx.scene.Group;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
+import javafx.scene.control.TextField;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
@@ -59,7 +60,7 @@ public class ForestDisplay {
 
 		
 		//Make MazeController
-		controller = new FireController(NUM_ROWS,NUM_COLUMNS, 0.4, 1,1,);
+		controller = new FireController(NUM_ROWS,NUM_COLUMNS, 0.4, 1,1,this);
 		
 		
 		// Initializing the gui
@@ -101,9 +102,9 @@ public class ForestDisplay {
 		controls.setAlignment(Pos.BASELINE_CENTER);
 		controls.setSpacing(10);
 
-		Button newMazeButton = new Button("New Maze");
+		Button newMazeButton = new Button("New Simulation");
 		newMazeButton.setOnAction(value ->  {
-			controller.newMaze();
+			controller.newSimulation();
 			});
 		controls.getChildren().add(newMazeButton);
 
@@ -126,35 +127,47 @@ public class ForestDisplay {
 		searches.setAlignment(Pos.BASELINE_CENTER);
 		searches.setSpacing(5);
 
-		Button dfsButton = new Button("Depth-First Search");
-		dfsButton.setOnAction(value ->  {
-			controller.startSearch("DFS");
+		TextField gridHeight = new TextField("Grid Height");
+		//Button dfsButton = new Button("");
+		gridHeight.setOnAction(value ->  {
+			//controller.startSearch("DFS");
 		});
-		searches.getChildren().add(dfsButton);
+		searches.getChildren().add(gridHeight);
 
-		Button bfsButton = new Button("Breadth-First Search");
-		bfsButton.setOnAction(value ->  {
-			controller.startSearch("BFS");
+		TextField gridWidth = new TextField("Grid Width");
+		//Button bfsButton = new Button("Breadth-First Search");
+		gridWidth.setOnAction(value ->  {
+			//controller.startSearch("BFS");
 		});
-		searches.getChildren().add(bfsButton);
+		searches.getChildren().add(gridWidth);
 
-		Button greedyButton = new Button("Greedy");
-		greedyButton.setOnAction(value ->  {
-			controller.startSearch("Greedy");
+		TextField burnTime = new TextField("Burn Time");
+		//Button greedyButton = new Button("Greedy");
+		burnTime.setOnAction(value ->  {
+			//controller.startSearch("Greedy");
 		});
-		searches.getChildren().add(greedyButton);
+		searches.getChildren().add(burnTime);
 
-		Button randButton = new Button("Random Walk");
-		randButton.setOnAction(value ->  {
-			controller.startSearch("RandomWalk");
+		TextField spreadProb = new TextField("Spread Probability");
+		//Button randButton = new Button("Random Walk");
+		spreadProb.setOnAction(value ->  {
+			//controller.startSearch("RandomWalk");
 		});
-		searches.getChildren().add(randButton);
+		searches.getChildren().add(spreadProb);
 
-		Button magicButton = new Button("Magic!");
-		magicButton.setOnAction(value ->  {
-			controller.startSearch("Magic");
+		TextField forestDensity = new TextField("Forest Density");
+		//Button magicButton = new Button("Magic!");
+		forestDensity.setOnAction(value ->  {
+			//controller.startSearch("Magic");
 		});
-		searches.getChildren().add(magicButton);
+		searches.getChildren().add(forestDensity);
+		
+		TextField numBurningTrees = new TextField("# of Burning Trees");
+		//Button magicButton = new Button("Magic!");
+		numBurningTrees.setOnAction(value ->  {
+			//controller.startSearch("Magic");
+		});
+		searches.getChildren().add(numBurningTrees);
 		return searches;
 	}
 
@@ -209,9 +222,9 @@ public class ForestDisplay {
 	 * method assumes the display maze matches the model maze
 	 */
 	public void redraw(){
-		for(int i = 0; i< mirrorMaze.length; i++){
-			for(int j =0; j < mirrorMaze[i].length; j++){
-				mirrorMaze[i][j].setFill(color[controller.getCellState(new Point(i,j))]);
+		for(int i = 0; i< mirrorFire.length; i++){
+			for(int j =0; j < mirrorFire[i].length; j++){
+				mirrorFire[i][j].setFill(color[controller.getCellState(new Point(i,j))]);
 			}
 		}
 	}
