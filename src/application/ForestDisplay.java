@@ -1,9 +1,11 @@
+package application;
 
 import java.awt.Point;
 
 
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
+import javafx.application.Application;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Group;
@@ -17,7 +19,7 @@ import javafx.scene.shape.Rectangle;
 import javafx.stage.Stage;
 import javafx.util.Duration;
 
-public class ForestDisplay {
+public class ForestDisplay extends Application {
 	/*
 	 * GUI settings
 	 */
@@ -185,7 +187,7 @@ public class ForestDisplay {
 		for(int i = 0; i< NUM_ROWS; i++){
 			for(int j =0; j < NUM_COLUMNS; j++){
 				Rectangle rect = new Rectangle(j*BLOCK_SIZE, i*BLOCK_SIZE, BLOCK_SIZE, BLOCK_SIZE);
-				rect.setFill(color[controller.getCellState(new Point(i,j))]);
+				rect.setFill(controller.getCellState(new Point(i,j)));
 				mirrorFire[i][j] = rect;
 				drawing.getChildren().add(rect);
 			}	
@@ -224,7 +226,7 @@ public class ForestDisplay {
 	public void redraw(){
 		for(int i = 0; i< mirrorFire.length; i++){
 			for(int j =0; j < mirrorFire[i].length; j++){
-				mirrorFire[i][j].setFill(color[controller.getCellState(new Point(i,j))]);
+				mirrorFire[i][j].setFill(controller.getCellState(new Point(i,j)));
 			}
 		}
 	}
