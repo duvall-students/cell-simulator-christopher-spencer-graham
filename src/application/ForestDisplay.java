@@ -35,6 +35,11 @@ public class ForestDisplay extends Application {
 	private Scene myScene;						// the container for the GUI
 	private boolean paused = false;		
 	private Button pauseButton;
+	
+	private double userBurnTime;
+	private double userForestDensity;
+	private double userSpreadProb;
+	private int userNumBurningTrees;
 
 	private Rectangle[][] mirrorFire;	// the Rectangle objects that will get updated and drawn.  It is 
 	// called "mirror" maze because there is one entry per square in 
@@ -62,9 +67,12 @@ public class ForestDisplay extends Application {
 	// Start of JavaFX Application
 	public void start(Stage stage) {
 
-		
+		userForestDensity = 0.4;
+		userNumBurningTrees = 20;
+		userBurnTime = 2;
+		userSpreadProb = 0.2;
 		//Make MazeController
-		controller = new FireController(NUM_ROWS,NUM_COLUMNS, 0.4, 1,1,this);
+		controller = new FireController(NUM_ROWS,NUM_COLUMNS, userForestDensity, userNumBurningTrees, userBurnTime, userSpreadProb, this);
 		
 		
 		// Initializing the gui
@@ -108,7 +116,7 @@ public class ForestDisplay extends Application {
 
 		Button newMazeButton = new Button("New Simulation");
 		newMazeButton.setOnAction(value ->  {
-			controller.newSimulation();
+			controller.newForest(userNumBurningTrees, userForestDensity);
 			});
 		controls.getChildren().add(newMazeButton);
 
@@ -185,16 +193,17 @@ public class ForestDisplay extends Application {
 		    @Override
 		    public void changed(ObservableValue<? extends String> observable, String oldValue, 
 		        String newValue) {
-		        if (!newValue.matches("\\d*")) {
-		        	burnTime.setText(newValue.replaceAll("[^\\d]", ""));
-		        }
+//		        if (!newValue.matches("\\d*")) {
+//		        	burnTime.setText(newValue.replaceAll("[^\\d]", ""));
+//		        }
+		    	userBurnTime = Double.parseDouble(burnTime.getText());
 		    }
 		});
 		//Button greedyButton = new Button("Greedy");
-		burnTime.setOnAction(value ->  {
-			controller.getBurnTime();
+//		burnTime.setOnAction(value ->  {
+//			userBurnTime = Double.parseDouble(burnTime.getText());
 			//controller.startSearch("Greedy");
-		});
+//		});
 		searches.getChildren().add(burnTime);
 
 		TextField spreadProb = new TextField("Spread Probability");
@@ -202,16 +211,18 @@ public class ForestDisplay extends Application {
 		    @Override
 		    public void changed(ObservableValue<? extends String> observable, String oldValue, 
 		        String newValue) {
-		        if (!newValue.matches("\\d*")) {
-		        	spreadProb.setText(newValue.replaceAll("[^\\d]", ""));
-		        }
+//		        if (!newValue.matches("\\d*")) {
+//		        	spreadProb.setText(newValue.replaceAll("[^\\d]", ""));
+//		        }
+		    	userSpreadProb = Double.parseDouble(spreadProb.getText());
 		    }
 		});
 		//Button randButton = new Button("Random Walk");
-		spreadProb.setOnAction(value ->  {
-			controller.getBurnProbability();
+//		spreadProb.setOnAction(value ->  {
+			//userSpreadProb = Double.parseDouble(spreadProb.getText());
+//			controller.getBurnProbability();
 			//controller.startSearch("RandomWalk");
-		});
+//		});
 		searches.getChildren().add(spreadProb);
 
 		TextField forestDensity = new TextField("Forest Density");
@@ -219,16 +230,18 @@ public class ForestDisplay extends Application {
 		    @Override
 		    public void changed(ObservableValue<? extends String> observable, String oldValue, 
 		        String newValue) {
-		        if (!newValue.matches("\\d*")) {
-		        	forestDensity.setText(newValue.replaceAll("[^\\d]", ""));
-		        }
+//		        if (!newValue.matches("\\d*")) {
+//		        	forestDensity.setText(newValue.replaceAll("[^\\d]", ""));
+//		        }
+		    	userForestDensity = Double.parseDouble(forestDensity.getText());
 		    }
 		});
 		//Button magicButton = new Button("Magic!");
-		forestDensity.setOnAction(value ->  {
-	
-			//controller.startSearch("Magic");
-		});
+//		forestDensity.setOnAction(value ->  {
+//			userForestDensity = Double.parseDouble(forestDensity.getText());
+//			System.out.println(userForestDensity);
+//			//controller.startSearch("Magic");
+//		});
 		searches.getChildren().add(forestDensity);
 		
 		TextField numBurningTrees = new TextField("# of Burning Trees");
@@ -236,16 +249,17 @@ public class ForestDisplay extends Application {
 		    @Override
 		    public void changed(ObservableValue<? extends String> observable, String oldValue, 
 		        String newValue) {
-		        if (!newValue.matches("\\d*")) {
-		        	numBurningTrees.setText(newValue.replaceAll("[^\\d]", ""));
-		        }
+//		        if (!newValue.matches("\\d*")) {
+//		        	numBurningTrees.setText(newValue.replaceAll("[^\\d]", ""));
+//		        }
+		    	userNumBurningTrees = Integer.parseInt((numBurningTrees.getText()));
 		    }
 		});
 		//Button magicButton = new Button("Magic!");
-		numBurningTrees.setOnAction(value ->  {
-			
+//		numBurningTrees.setOnAction(value ->  {
+//			userNumBurningTrees = Integer.parseInt((numBurningTrees.getText()));
 			//controller.startSearch("Magic");
-		});
+//		});
 		searches.getChildren().add(numBurningTrees);
 		return searches;
 	}
@@ -316,16 +330,4 @@ public class ForestDisplay extends Application {
 			controller.doOneStep(elapsedTime);
 		}
 	}
-
-
-	
-	
-
-
-
-
-	public static void main(String[] args) {
-		launch(args);
-	}
-
 }
