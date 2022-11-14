@@ -25,7 +25,9 @@ public class ForestDisplay extends Application {
 	/*
 	 * GUI settings
 	 */
+
 	private final int MILLISECOND_DELAY = 1000;	// speed of animation
+
 	private final int EXTRA_VERTICAL = 100; 	// GUI area allowance when making the scene width
 	private final int EXTRA_HORIZONTAL = 150; 	// GUI area allowance when making the scene width
 	private final int BLOCK_SIZE = 12;     		// size of each cell in pixels
@@ -71,10 +73,11 @@ public class ForestDisplay extends Application {
 
 		numRows = 50;
 		numCols = 50;
-		userForestDensity = 0.9;
-		userNumBurningTrees = 25;
-		userBurnTime = 10;
+		userForestDensity = 1;
+		userNumBurningTrees = 1;
+		userBurnTime = 1;
 		userSpreadProb = 0.4;
+
 		//Make MazeController
 		controller = new FireController(numRows,numCols, userForestDensity, userNumBurningTrees, userBurnTime, userSpreadProb);
 		myStage = stage;
@@ -172,6 +175,8 @@ public class ForestDisplay extends Application {
 //		        	gridHeight.setText(newValue.replaceAll("[^\\d]", ""));
 //		        }
 		    	numRows = Integer.parseInt(gridHeight.getText()) + 2;
+		    	System.out.println("Rows: " + numRows);
+
 		    }
 		});
 		//Button dfsButton = new Button("");
@@ -192,6 +197,8 @@ public class ForestDisplay extends Application {
 //		        	gridWidth.setText(newValue.replaceAll("[^\\d]", ""));
 //		        }
 		        numCols = Integer.parseInt(gridWidth.getText()) + 2;
+		    	System.out.println("Cols: " + numCols);
+
 		    }
 		});
 		//Button bfsButton = new Button("Breadth-First Search");
@@ -210,6 +217,8 @@ public class ForestDisplay extends Application {
 //		        	burnTime.setText(newValue.replaceAll("[^\\d]", ""));
 //		        }
 		    	userBurnTime = Double.parseDouble(burnTime.getText());
+		    	System.out.println(userBurnTime);
+
 		    }
 		});
 		//Button greedyButton = new Button("Greedy");
@@ -228,6 +237,8 @@ public class ForestDisplay extends Application {
 //		        	spreadProb.setText(newValue.replaceAll("[^\\d]", ""));
 //		        }
 		    	userSpreadProb = Double.parseDouble(spreadProb.getText());
+		    	System.out.println(userSpreadProb);
+
 		    }
 		});
 		//Button randButton = new Button("Random Walk");
@@ -247,6 +258,8 @@ public class ForestDisplay extends Application {
 //		        	forestDensity.setText(newValue.replaceAll("[^\\d]", ""));
 //		        }
 		    	userForestDensity = Double.parseDouble(forestDensity.getText());
+		    	System.out.println(userForestDensity);
+
 		    }
 		});
 		//Button magicButton = new Button("Magic!");
@@ -266,6 +279,7 @@ public class ForestDisplay extends Application {
 //		        	numBurningTrees.setText(newValue.replaceAll("[^\\d]", ""));
 //		        }
 		    	userNumBurningTrees = Integer.parseInt((numBurningTrees.getText()));
+		    	System.out.println(userNumBurningTrees);
 		    }
 		});
 		//Button magicButton = new Button("Magic!");
@@ -349,6 +363,5 @@ public class ForestDisplay extends Application {
 			doOneStep(elapsedTime);
 			
 		}
-		
 	}
 }
