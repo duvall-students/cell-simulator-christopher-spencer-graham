@@ -19,23 +19,17 @@ import java.util.List;
 
 public class FireModel {
 
-	
-	private Double forestDensiity = 1.0;
-
-	private int numberInitialBurningTrees = 1;
 	List<Point> treePositions;
 	private FireController fireController;
-
 
 	Random rand = new Random();
 	private CellState[][] forest;	// The squares making up the maze
 
-	public FireModel(int rows, int columns, double forestDensity, int numBurningTrees, FireController fireController){
+	public FireModel(int rows, int columns, double userForestDensity, int userNumBurningTrees, FireController fireController){
 		assert(rows > 0 && columns > 0);
 		treePositions = new ArrayList<>();
 		this.fireController = fireController;
-		createForest(rows, columns);
-		
+		createForest(rows, columns, userNumBurningTrees, userForestDensity);
 	}
 
 	public int getNumRows(){
@@ -69,17 +63,20 @@ public class FireModel {
 		return (p!=null && p.x < forest.length && p.x >= 0 && p.y < forest[0].length && p.y >= 0);
 	}
 
-	public void createForest(int rows, int cols) {
+	public void createForest(int rows, int cols, int numBurningTrees, double forestDensity) {
 		assert(rows > 0 && cols > 0);
+		treePositions.clear();
 		forest = new CellState[rows][cols];
-		double randomForestDensity = rand.nextDouble();
 		for (int i = 0; i < rows; i++) {
 			for (int j = 0; j < cols; j++) {
-				if (i == 0 || j % (cols-1) == 0) {
+				double randomForestDensity = rand.nextDouble();
+				if (i % (rows-1) == 0 || j % (cols-1) == 0) {
+//					System.out.println("i = " + i);
+//					System.out.println("j = " + j);
 					forest[i][j] = new EdgeCellState(this, fireController);
 				}
 				else {
-					if (randomForestDensity <= forestDensiity) {
+					if (randomForestDensity <= forestDensity) {
 						forest[i][j] = new LiveTreeState(this, fireController);
 						treePositions.add(new Point(i,j));
 						
@@ -90,12 +87,13 @@ public class FireModel {
 				}
 			}
 		}
+		assignBurningTrees(numBurningTrees);
 	}
 	
-	public void	assignBurningTrees() {
+	public void	assignBurningTrees(int numBurningTrees) {
 		int numberOfTrees = treePositions.size();
 		int numberOfTreesChanged = 0;
-		while (numberOfTreesChanged < numberInitialBurningTrees) {
+		while (numberOfTreesChanged < numBurningTrees) {
 			int burningTree = rand.nextInt(numberOfTrees);
 			Point newBurningTree = treePositions.get(burningTree);
 			if (!(forest[newBurningTree.x][newBurningTree.y] instanceof BurningState)) {
