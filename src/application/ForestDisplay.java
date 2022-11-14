@@ -171,7 +171,7 @@ public class ForestDisplay extends Application {
 //		        if (!newValue.matches("\\d*")) {
 //		        	gridHeight.setText(newValue.replaceAll("[^\\d]", ""));
 //		        }
-		    	numRows = Integer.parseInt(gridHeight.getText());
+		    	numRows = Integer.parseInt(gridHeight.getText()) + 2;
 		    }
 		});
 		//Button dfsButton = new Button("");
@@ -191,7 +191,7 @@ public class ForestDisplay extends Application {
 //		        if (!newValue.matches("\\d*")) {
 //		        	gridWidth.setText(newValue.replaceAll("[^\\d]", ""));
 //		        }
-		        numCols = Integer.parseInt(gridWidth.getText());
+		        numCols = Integer.parseInt(gridWidth.getText()) + 2;
 		    }
 		});
 		//Button bfsButton = new Button("Breadth-First Search");
