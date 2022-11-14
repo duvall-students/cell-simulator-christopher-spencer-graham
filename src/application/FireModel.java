@@ -65,11 +65,14 @@ public class FireModel {
 
 	public void createForest(int rows, int cols, int numBurningTrees, double forestDensity) {
 		assert(rows > 0 && cols > 0);
+		treePositions.clear();
 		forest = new CellState[rows][cols];
 		for (int i = 0; i < rows; i++) {
 			for (int j = 0; j < cols; j++) {
 				double randomForestDensity = rand.nextDouble();
 				if (i % (rows-1) == 0 || j % (cols-1) == 0) {
+//					System.out.println("i = " + i);
+//					System.out.println("j = " + j);
 					forest[i][j] = new EdgeCellState(this, fireController);
 				}
 				else {
