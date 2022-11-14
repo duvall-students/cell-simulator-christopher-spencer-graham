@@ -8,6 +8,7 @@ import java.util.Random;
 import application.FireController;
 import application.FireModel;
 import javafx.scene.paint.Color;
+import java.lang.ArrayIndexOutOfBoundsException;
 
 public class LiveTreeState extends CellState {
 
@@ -28,7 +29,7 @@ public class LiveTreeState extends CellState {
 			try {
 				possibleBurningState = (BurningState) fireModel.getState(c);
 			}
-			catch(ClassCastException e) {
+			catch(ClassCastException|ArrayIndexOutOfBoundsException e) {
 				continue;
 			}
 			if(possibleBurningState != null) {
