@@ -46,6 +46,7 @@ public class ForestDisplay extends Application {
 	private double userForestDensity;
 	private double userSpreadProb;
 	private int userNumBurningTrees;
+	private String changedValue; // Value to hold user updated parameter
 
 	private Rectangle[][] mirrorFire;	// the Rectangle objects that will get updated and drawn.  It is 
 	// called "mirror" maze because there is one entry per square in 
@@ -163,34 +164,71 @@ public class ForestDisplay extends Application {
 
 		// Grid Height TextBox
 		TextField gridHeight = createTextField(parameters, "Grid Height:",Integer.toString(numRows));
-		numRows = Integer.parseInt((gridHeight.getText()));
-    	System.out.println(numRows);
+		gridHeight.textProperty().addListener(new ChangeListener<String>() {
+			@Override
+			public void changed(ObservableValue<? extends String> observable, String oldValue,
+				      String newValue) {
+				numRows = Integer.parseInt(gridHeight.getText());
+		    	System.out.println(numRows);
+			}
+			});
+		
 		
 		// Grid Width TextBox
-		TextField gridWidth = createTextField(parameters, "Grid Width:",Integer.toString(numCols));
-		numCols = Integer.parseInt((gridWidth.getText()));
-    	System.out.println(numCols);
+    	TextField gridWidth = createTextField(parameters, "Grid Width:",Integer.toString(numCols));
+    	gridWidth.textProperty().addListener(new ChangeListener<String>() {
+			@Override
+			public void changed(ObservableValue<? extends String> observable, String oldValue,
+				      String newValue) {
+				numCols = Integer.parseInt(gridWidth.getText());
+		    	System.out.println(numCols);
+			}
+			});
     	
     	// Burn Time TextBox
-		TextField burnTimeLabel = createTextField(parameters, "Burn Time:",Double.toString(userBurnTime));
-		userBurnTime = Double.parseDouble((burnTimeLabel.getText()));
-    	System.out.println(userBurnTime);
+    	TextField burnTimeLabel = createTextField(parameters, "Burn Time:",Double.toString(userBurnTime));
+    	burnTimeLabel.textProperty().addListener(new ChangeListener<String>() {
+			@Override
+			public void changed(ObservableValue<? extends String> observable, String oldValue,
+				      String newValue) {
+				userBurnTime = Double.parseDouble(burnTimeLabel.getText());
+		    	System.out.println(userBurnTime);
+			}
+			});
 		
 		// Spread Probability TextBox
-		TextField spreadProb = createTextField(parameters, "Spread Probability:",Double.toString(userSpreadProb));
-		userSpreadProb = Double.parseDouble((spreadProb.getText()));
-    	System.out.println(userSpreadProb);
+    	TextField spreadProb = createTextField(parameters, "Spread Probability:",Double.toString(userSpreadProb));
+    	spreadProb.textProperty().addListener(new ChangeListener<String>() {
+			@Override
+			public void changed(ObservableValue<? extends String> observable, String oldValue,
+				      String newValue) {
+				userSpreadProb = Double.parseDouble(burnTimeLabel.getText());
+		    	System.out.println(userSpreadProb);
+			}
+			});
 
 		// Forest Density TextBox
-		TextField forestDensity = createTextField(parameters, "Forest Density:",Double.toString(userForestDensity));
-		userForestDensity = Double.parseDouble((forestDensity.getText()));
-    	System.out.println(userForestDensity);
+    	TextField forestDensity = createTextField(parameters, "Forest Density:",Double.toString(userForestDensity));
+    	forestDensity.textProperty().addListener(new ChangeListener<String>() {
+			@Override
+			public void changed(ObservableValue<? extends String> observable, String oldValue,
+				      String newValue) {
+				userForestDensity = Double.parseDouble(forestDensity.getText());
+		    	System.out.println(userForestDensity);
+			}
+			});
 
 		
 		// Number of Burning Trees TextBox
 		TextField numBurningTrees = createTextField(parameters, "# Burn Trees",Integer.toString(userNumBurningTrees));
-		userNumBurningTrees = Integer.parseInt((numBurningTrees.getText()));
-    	System.out.println(userNumBurningTrees);
+		numBurningTrees.textProperty().addListener(new ChangeListener<String>() {
+			@Override
+			public void changed(ObservableValue<? extends String> observable, String oldValue,
+				      String newValue) {
+				userNumBurningTrees = Integer.parseInt(numBurningTrees.getText());
+		    	System.out.println(userNumBurningTrees);
+			}
+			});
 		return parameters;
 	}
 
@@ -273,8 +311,10 @@ public class ForestDisplay extends Application {
 		TextField textBox = new TextField(value);
 		textBox.setPrefColumnCount(4);
 		parameters.getChildren().addAll(title, textBox);
+		
+			
+		
 		return textBox;
-
 
 	}
 }
