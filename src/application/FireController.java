@@ -9,6 +9,7 @@ public class FireController {
 	private ForestDisplay forestDisplay;
 	private double burnTime;
 	private double spreadProb;
+	private double totalElapsedTime = 0;
 	
 	public FireController(int numRows, int numCols, double forestDensity, int numBurningTrees, double userBurnTime, double userSpreadProb, ForestDisplay forestDisplay) {
 		fireModel = new FireModel(numRows, numCols, forestDensity, numBurningTrees, this);
@@ -35,10 +36,11 @@ public class FireController {
 	}
 	
 	public void doOneStep(double elapsedTime) {
+		totalElapsedTime += elapsedTime;
 		for(int x = 0; x < fireModel.getNumRows(); x++) {
 			for(int y = 0; y < fireModel.getNumCols(); y++) {
 				Point cellPosition = new Point(x,y);
-				fireModel.treeChangeState(cellPosition, fireModel.getState(cellPosition).act(cellPosition, elapsedTime));
+				fireModel.treeChangeState(cellPosition, fireModel.getState(cellPosition).act(cellPosition, totalElapsedTime));
 			}
 		}
 	}
