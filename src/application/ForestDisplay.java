@@ -1,9 +1,13 @@
+package application;
 
 import java.awt.Point;
 
 
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
+import javafx.application.Application;
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Group;
@@ -17,7 +21,7 @@ import javafx.scene.shape.Rectangle;
 import javafx.stage.Stage;
 import javafx.util.Duration;
 
-public class ForestDisplay {
+public class ForestDisplay extends Application {
 	/*
 	 * GUI settings
 	 */
@@ -44,12 +48,12 @@ public class ForestDisplay {
 	/*
 	 * Maze color settings
 	 */
-	private Color[] color  = new Color[] {
-			Color.rgb(200,0,0),		// wall color
-			Color.rgb(128,128,255),	// path color
-			Color.WHITE,			// empty cell color
-			Color.rgb(200,200,200)	// visited cell color
-	};  		// the color of each of the states  
+//	private Color[] color  = new Color[] {
+//			Color.rgb(200,0,0),		// wall color
+//			Color.rgb(128,128,255),	// path color
+//			Color.WHITE,			// empty cell color
+//			Color.rgb(200,200,200)	// visited cell color
+//	};  		// the color of each of the states  
 
 	
 	
@@ -66,7 +70,7 @@ public class ForestDisplay {
 		// Initializing the gui
 		myScene = setupScene();
 		stage.setScene(myScene);
-		stage.setTitle("aMAZEing");
+		stage.setTitle("Forest Fires");
 		stage.show();
 
 		// Makes the animation happen.  Will call "step" method repeatedly.
@@ -81,7 +85,7 @@ public class ForestDisplay {
 	private Scene setupScene () {
 		// Make three container 
 		Group mazeDrawing = setupMaze();
-		HBox searches = setupSearchButtons();
+		HBox searches = setupParameterButtons();
 		HBox controls = setupControlButtons();
 
 		VBox root = new VBox();
@@ -122,49 +126,124 @@ public class ForestDisplay {
 		return controls;
 	}
 
-	private HBox setupSearchButtons(){
+	private HBox setupParameterButtons(){
 		HBox searches = new HBox();
 		searches.setAlignment(Pos.BASELINE_CENTER);
 		searches.setSpacing(5);
 
+		
+		
 		TextField gridHeight = new TextField("Grid Height");
+		// The following code is from: https://stackoverflow.com/questions/7555564/what-is-the-recommended-way-to-make-a-numeric-textfield-in-javafx
+		// textField.textProperty().addListener(new ChangeListener<String>() {
+//	    @Override
+//	    public void changed(ObservableValue<? extends String> observable, String oldValue, 
+//	        String newValue) {
+//	        if (!newValue.matches("\\d*")) {
+//	            textField.setText(newValue.replaceAll("[^\\d]", ""));
+//	        }
+//	    }
+//	});
+		// force the field to be numeric only
+		gridHeight.textProperty().addListener(new ChangeListener<String>() {
+		    @Override
+		    public void changed(ObservableValue<? extends String> observable, String oldValue, 
+		        String newValue) {
+		        if (!newValue.matches("\\d*")) {
+		        	gridHeight.setText(newValue.replaceAll("[^\\d]", ""));
+		        }
+		    }
+		});
 		//Button dfsButton = new Button("");
 		gridHeight.setOnAction(value ->  {
+			System.out.println(value);
+			
+
 			//controller.startSearch("DFS");
 		});
 		searches.getChildren().add(gridHeight);
 
 		TextField gridWidth = new TextField("Grid Width");
+		gridWidth.textProperty().addListener(new ChangeListener<String>() {
+		    @Override
+		    public void changed(ObservableValue<? extends String> observable, String oldValue, 
+		        String newValue) {
+		        if (!newValue.matches("\\d*")) {
+		        	gridWidth.setText(newValue.replaceAll("[^\\d]", ""));
+		        }
+		    }
+		});
 		//Button bfsButton = new Button("Breadth-First Search");
 		gridWidth.setOnAction(value ->  {
+			System.out.println(value);
 			//controller.startSearch("BFS");
 		});
 		searches.getChildren().add(gridWidth);
 
 		TextField burnTime = new TextField("Burn Time");
+		burnTime.textProperty().addListener(new ChangeListener<String>() {
+		    @Override
+		    public void changed(ObservableValue<? extends String> observable, String oldValue, 
+		        String newValue) {
+		        if (!newValue.matches("\\d*")) {
+		        	burnTime.setText(newValue.replaceAll("[^\\d]", ""));
+		        }
+		    }
+		});
 		//Button greedyButton = new Button("Greedy");
 		burnTime.setOnAction(value ->  {
+			controller.getBurnTime();
 			//controller.startSearch("Greedy");
 		});
 		searches.getChildren().add(burnTime);
 
 		TextField spreadProb = new TextField("Spread Probability");
+		spreadProb.textProperty().addListener(new ChangeListener<String>() {
+		    @Override
+		    public void changed(ObservableValue<? extends String> observable, String oldValue, 
+		        String newValue) {
+		        if (!newValue.matches("\\d*")) {
+		        	spreadProb.setText(newValue.replaceAll("[^\\d]", ""));
+		        }
+		    }
+		});
 		//Button randButton = new Button("Random Walk");
 		spreadProb.setOnAction(value ->  {
+			controller.getBurnProbability();
 			//controller.startSearch("RandomWalk");
 		});
 		searches.getChildren().add(spreadProb);
 
 		TextField forestDensity = new TextField("Forest Density");
+		forestDensity.textProperty().addListener(new ChangeListener<String>() {
+		    @Override
+		    public void changed(ObservableValue<? extends String> observable, String oldValue, 
+		        String newValue) {
+		        if (!newValue.matches("\\d*")) {
+		        	forestDensity.setText(newValue.replaceAll("[^\\d]", ""));
+		        }
+		    }
+		});
 		//Button magicButton = new Button("Magic!");
 		forestDensity.setOnAction(value ->  {
+	
 			//controller.startSearch("Magic");
 		});
 		searches.getChildren().add(forestDensity);
 		
 		TextField numBurningTrees = new TextField("# of Burning Trees");
+		numBurningTrees.textProperty().addListener(new ChangeListener<String>() {
+		    @Override
+		    public void changed(ObservableValue<? extends String> observable, String oldValue, 
+		        String newValue) {
+		        if (!newValue.matches("\\d*")) {
+		        	numBurningTrees.setText(newValue.replaceAll("[^\\d]", ""));
+		        }
+		    }
+		});
 		//Button magicButton = new Button("Magic!");
 		numBurningTrees.setOnAction(value ->  {
+			
 			//controller.startSearch("Magic");
 		});
 		searches.getChildren().add(numBurningTrees);
@@ -185,7 +264,7 @@ public class ForestDisplay {
 		for(int i = 0; i< NUM_ROWS; i++){
 			for(int j =0; j < NUM_COLUMNS; j++){
 				Rectangle rect = new Rectangle(j*BLOCK_SIZE, i*BLOCK_SIZE, BLOCK_SIZE, BLOCK_SIZE);
-				rect.setFill(color[controller.getCellState(new Point(i,j))]);
+				rect.setFill(controller.getCellState(new Point(i,j)));
 				mirrorFire[i][j] = rect;
 				drawing.getChildren().add(rect);
 			}	
@@ -224,7 +303,7 @@ public class ForestDisplay {
 	public void redraw(){
 		for(int i = 0; i< mirrorFire.length; i++){
 			for(int j =0; j < mirrorFire[i].length; j++){
-				mirrorFire[i][j].setFill(color[controller.getCellState(new Point(i,j))]);
+				mirrorFire[i][j].setFill(controller.getCellState(new Point(i,j)));
 			}
 		}
 	}

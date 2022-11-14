@@ -1,6 +1,15 @@
+package application;
 import java.awt.Point;
 import javafx.scene.paint.Color;
 import java.util.Random;
+
+import cell_states.BurningState;
+import cell_states.CellState;
+import cell_states.EdgeCellState;
+import cell_states.GroundCellState;
+import cell_states.LiveTreeState;
+
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
@@ -9,24 +18,24 @@ import java.util.List;
  */
 
 public class FireModel {
-	private static final Color EDGE = Color.BLACK;	
-	private static final Color EMPTY = Color.BROWN;
-	private static final Color NON_BURNING_TREE = Color.GREEN;
-	private static final Color BURNING_TREE = Color.RED;
-	private static final Color BURNT_DOWN_TREE = Color.YELLOW;
-	private static Double FOREST_DENSITY = 1.0;
-	private static Double SPREAD_PROBABILITY = 0.4;
-	private static Double BURN_TIME = 1.0;
-	private static int NUMBER_INITIAL_BURNING_TREES = 1;
+
+	
+	private Double forestDensiity = 1.0;
+
+	private int numberInitialBurningTrees = 1;
 	List<Point> treePositions;
-	Collection<Point> treeNeighbors;
+	private FireController fireController;
+
 
 	Random rand = new Random();
-	private Color[][] forest;	// The squares making up the maze
+	private CellState[][] forest;	// The squares making up the maze
 
-	public FireModel(int rows, int columns){
+	public FireModel(int rows, int columns, double forestDensity, int numBurningTrees, FireController fireController){
 		assert(rows > 0 && columns > 0);
+		treePositions = new ArrayList<>();
+		this.fireController = fireController;
 		createForest(rows, columns);
+		
 	}
 
 	public int getNumRows(){
@@ -39,7 +48,7 @@ public class FireModel {
 		return forest[0].length;
 	}
 	
-	public Color getState(Point position){
+	public CellState getState(Point position){
 		assert(forest!=null);
 		return forest[position.x][position.y];
 	}
@@ -62,21 +71,21 @@ public class FireModel {
 
 	public void createForest(int rows, int cols) {
 		assert(rows > 0 && cols > 0);
-		forest = new Color[rows][cols];
+		forest = new CellState[rows][cols];
 		double randomForestDensity = rand.nextDouble();
 		for (int i = 0; i < rows; i++) {
 			for (int j = 0; j < cols; j++) {
 				if (i == 0 || j % (cols-1) == 0) {
-					forest[i][j] = EDGE;
+					forest[i][j] = new EdgeCellState(this, fireController);
 				}
 				else {
-					if (randomForestDensity <= FOREST_DENSITY) {
-						forest[i][j] = NON_BURNING_TREE;
+					if (randomForestDensity <= forestDensiity) {
+						forest[i][j] = new LiveTreeState(this, fireController);
 						treePositions.add(new Point(i,j));
 						
 					}
 					else {
-						forest[i][j] = EMPTY;
+						forest[i][j] = new GroundCellState(this, fireController);
 					}
 				}
 			}
@@ -86,25 +95,19 @@ public class FireModel {
 	public void	assignBurningTrees() {
 		int numberOfTrees = treePositions.size();
 		int numberOfTreesChanged = 0;
-		while (numberOfTreesChanged < NUMBER_INITIAL_BURNING_TREES) {
+		while (numberOfTreesChanged < numberInitialBurningTrees) {
 			int burningTree = rand.nextInt(numberOfTrees);
 			Point newBurningTree = treePositions.get(burningTree);
-			if (forest[newBurningTree.x][newBurningTree.y] !=  BURNING_TREE) {
-				forest[newBurningTree.x][newBurningTree.y] = BURNING_TREE;
+			if (!(forest[newBurningTree.x][newBurningTree.y] instanceof BurningState)) {
+				forest[newBurningTree.x][newBurningTree.y] = new BurningState(this, fireController, 0);
 				numberOfTreesChanged++;
 			}
 		}
 	}
 	
-	public Collection<Point> getNeighbors(Point treePosition) {
-		treeNeighbors.add(new Point(treePosition.x+1,treePosition.y));
-		treeNeighbors.add(new Point(treePosition.x-1,treePosition.y));
-		treeNeighbors.add(new Point(treePosition.x,treePosition.y+1));
-		treeNeighbors.add(new Point(treePosition.x,treePosition.y-1));
-		return treeNeighbors;
-	}
+
 	
-	public void treeChangeState(Point treePosition, Color newState) {
+	public void treeChangeState(Point treePosition, CellState newState) {
 		forest[treePosition.x][treePosition.y] = newState;
 	}
 }
