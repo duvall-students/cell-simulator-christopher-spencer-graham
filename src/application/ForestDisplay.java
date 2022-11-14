@@ -76,7 +76,7 @@ public class ForestDisplay extends Application {
 		userBurnTime = 10;
 		userSpreadProb = 0.4;
 		//Make MazeController
-		controller = new FireController(numRows,numCols, userForestDensity, userNumBurningTrees, userBurnTime, userSpreadProb, this);
+		controller = new FireController(numRows,numCols, userForestDensity, userNumBurningTrees, userBurnTime, userSpreadProb);
 		myStage = stage;
 		createNewSimulation();
 	}
@@ -152,7 +152,7 @@ public class ForestDisplay extends Application {
 
 		
 		
-		TextField gridHeight = new TextField("Grid Height");
+		TextField gridHeight = new TextField("Grid Height: " + numRows);
 		// The following code is from: https://stackoverflow.com/questions/7555564/what-is-the-recommended-way-to-make-a-numeric-textfield-in-javafx
 		// textField.textProperty().addListener(new ChangeListener<String>() {
 //	    @Override
@@ -183,7 +183,7 @@ public class ForestDisplay extends Application {
 //		});
 		searches.getChildren().add(gridHeight);
 
-		TextField gridWidth = new TextField("Grid Width");
+		TextField gridWidth = new TextField("Grid Width: " + numCols);
 		gridWidth.textProperty().addListener(new ChangeListener<String>() {
 		    @Override
 		    public void changed(ObservableValue<? extends String> observable, String oldValue, 
@@ -201,7 +201,7 @@ public class ForestDisplay extends Application {
 //		});
 		searches.getChildren().add(gridWidth);
 
-		TextField burnTime = new TextField("Burn Time");
+		TextField burnTime = new TextField("Burn Time: " + userBurnTime);
 		burnTime.textProperty().addListener(new ChangeListener<String>() {
 		    @Override
 		    public void changed(ObservableValue<? extends String> observable, String oldValue, 
@@ -219,7 +219,7 @@ public class ForestDisplay extends Application {
 //		});
 		searches.getChildren().add(burnTime);
 
-		TextField spreadProb = new TextField("Spread Probability");
+		TextField spreadProb = new TextField("Spread Probability: " + userSpreadProb);
 		spreadProb.textProperty().addListener(new ChangeListener<String>() {
 		    @Override
 		    public void changed(ObservableValue<? extends String> observable, String oldValue, 
@@ -237,8 +237,8 @@ public class ForestDisplay extends Application {
 			//controller.startSearch("RandomWalk");
 //		});
 		searches.getChildren().add(spreadProb);
-
-		TextField forestDensity = new TextField("Forest Density");
+		
+		TextField forestDensity = new TextField("Forest Density: " + userForestDensity);
 		forestDensity.textProperty().addListener(new ChangeListener<String>() {
 		    @Override
 		    public void changed(ObservableValue<? extends String> observable, String oldValue, 
