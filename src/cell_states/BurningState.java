@@ -22,7 +22,7 @@ public class BurningState extends CellState {
 	@Override
 	public CellState act(Point myPosition, double elapsedTime) {
 		this.color = RED;
-		if(fireController.getBurnTime() == elapsedTime - burnStart) {
+		if(fireController.getBurnTime() <= elapsedTime - burnStart) {
 			return new DeadTreeState(fireModel, fireController);
 		}
 		

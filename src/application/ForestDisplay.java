@@ -27,7 +27,9 @@ public class ForestDisplay extends Application {
 	/*
 	 * GUI settings
 	 */
-	private final int MILLISECOND_DELAY = 2000;	// speed of animation
+
+	private final int MILLISECOND_DELAY = 1000;	// speed of animation
+
 	private final int EXTRA_VERTICAL = 100; 	// GUI area allowance when making the scene width
 	private final int EXTRA_HORIZONTAL = 150; 	// GUI area allowance when making the scene width
 	private final int BLOCK_SIZE = 12;     		// size of each cell in pixels
@@ -65,20 +67,23 @@ public class ForestDisplay extends Application {
 //	};  		// the color of each of the states  
 
 	
-	
+
 
 
 	// Start of JavaFX Application
 	public void start(Stage stage) {
 
-		numRows = 41;
-		numCols = 51;
-		userForestDensity = 0.8;
+
+		numRows = 50;
+		numCols = 50;
+		userForestDensity = 1;
 		userNumBurningTrees = 1;
-		userBurnTime = 10;
-		userSpreadProb = 0.8;
+		userBurnTime = 1;
+		userSpreadProb = 0.4;
+
+
 		//Make MazeController
-		controller = new FireController(numRows,numCols, userForestDensity, userNumBurningTrees, userBurnTime, userSpreadProb, this);
+		controller = new FireController(numRows,numCols, userForestDensity, userNumBurningTrees, userBurnTime, userSpreadProb);
 		myStage = stage;
 		createNewSimulation();
 	}
@@ -145,7 +150,7 @@ public class ForestDisplay extends Application {
 		// Step Button
 		Button stepButton = new Button("Step");
 		stepButton.setOnAction(value ->  {
-			controller.doOneStep(MILLISECOND_DELAY);
+			doOneStep(MILLISECOND_DELAY);
 		});
 		controls.getChildren().add(stepButton);
 		return controls;
@@ -180,6 +185,7 @@ public class ForestDisplay extends Application {
 		TextField forestDensity = createTextField(parameters, "Forest Density:",Double.toString(userForestDensity));
 		userForestDensity = Double.parseDouble((forestDensity.getText()));
     	System.out.println(userForestDensity);
+
 		
 		// Number of Burning Trees TextBox
 		TextField numBurningTrees = createTextField(parameters, "# Burn Trees",Integer.toString(userNumBurningTrees));
@@ -246,15 +252,20 @@ public class ForestDisplay extends Application {
 			}
 		}
 	}
+	
+	private void doOneStep(double elapsedTime) {
+		controller.doOneStep(elapsedTime);
+		redraw();
+	}
 
 	/*
 	 * Does a step in the search only if not paused.
 	 */
 	public void step(double elapsedTime){
 		if(!paused) {
-			controller.doOneStep(elapsedTime);
+			doOneStep(elapsedTime);
+			
 		}
-		redraw();
 	}
 	
 	private TextField createTextField(HBox parameters , String label, String value) {
