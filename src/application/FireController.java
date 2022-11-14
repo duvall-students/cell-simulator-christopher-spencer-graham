@@ -17,9 +17,9 @@ public class FireController {
 		spreadProb = userSpreadProb;
 	}
 	
-	public void newForest(int numBurningTrees, double forestDensity) {
-		fireModel.createForest(fireModel.getNumRows(), fireModel.getNumCols(), numBurningTrees, forestDensity);
-		forestDisplay.redraw();
+	public void newForest(int numRows, int numCols, int numBurningTrees, double forestDensity) {
+		fireModel.createForest(numRows, numCols, numBurningTrees, forestDensity);
+		//forestDisplay.redraw();
 	}
 	
 	public double getBurnTime() {
