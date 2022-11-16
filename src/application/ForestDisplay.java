@@ -3,6 +3,7 @@ package application;
 import java.awt.Point;
 
 
+
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
 import javafx.application.Application;
@@ -13,6 +14,7 @@ import javafx.geometry.Pos;
 import javafx.scene.Group;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
+import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
@@ -44,6 +46,7 @@ public class ForestDisplay extends Application {
 	private double userForestDensity;
 	private double userSpreadProb;
 	private int userNumBurningTrees;
+	private String changedValue; // Value to hold user updated parameter
 
 	private Rectangle[][] mirrorFire;	// the Rectangle objects that will get updated and drawn.  It is 
 	// called "mirror" maze because there is one entry per square in 
@@ -71,12 +74,14 @@ public class ForestDisplay extends Application {
 	// Start of JavaFX Application
 	public void start(Stage stage) {
 
+
 		numRows = 50;
 		numCols = 50;
 		userForestDensity = 1;
 		userNumBurningTrees = 1;
 		userBurnTime = 1;
 		userSpreadProb = 0.4;
+
 
 		//Make MazeController
 		controller = new FireController(numRows,numCols, userForestDensity, userNumBurningTrees, userBurnTime, userSpreadProb);
@@ -124,22 +129,26 @@ public class ForestDisplay extends Application {
 		controls.setAlignment(Pos.BASELINE_CENTER);
 		controls.setSpacing(10);
 
-		Button newMazeButton = new Button("New Simulation");
-		newMazeButton.setOnAction(value ->  {
+		// New Simulation Button
+		Button newFireButton = new Button("New Simulation");
+		newFireButton.setOnAction(value ->  {
 			animation.stop();
 			controller.newForest(numRows, numCols, userNumBurningTrees, userForestDensity);
 			createNewSimulation();
 			redraw();
 			paused = false;
 			});
-		controls.getChildren().add(newMazeButton);
-
+		controls.getChildren().add(newFireButton);
+		
+		// Pause Button
 		pauseButton = new Button("Pause");
 		pauseButton.setOnAction(value ->  {
 			pressPause();
 		});
 		controls.getChildren().add(pauseButton);
 
+		
+		// Step Button
 		Button stepButton = new Button("Step");
 		stepButton.setOnAction(value ->  {
 			doOneStep(MILLISECOND_DELAY);
@@ -149,146 +158,78 @@ public class ForestDisplay extends Application {
 	}
 
 	private HBox setupParameterButtons(){
-		HBox searches = new HBox();
-		searches.setAlignment(Pos.BASELINE_CENTER);
-		searches.setSpacing(5);
+		HBox parameters = new HBox();
+		parameters.setAlignment(Pos.BASELINE_CENTER);
+		parameters.setSpacing(2);
 
-		
-		
-		TextField gridHeight = new TextField("Grid Height: " + numRows);
-		// The following code is from: https://stackoverflow.com/questions/7555564/what-is-the-recommended-way-to-make-a-numeric-textfield-in-javafx
-		// textField.textProperty().addListener(new ChangeListener<String>() {
-//	    @Override
-//	    public void changed(ObservableValue<? extends String> observable, String oldValue, 
-//	        String newValue) {
-//	        if (!newValue.matches("\\d*")) {
-//	            textField.setText(newValue.replaceAll("[^\\d]", ""));
-//	        }
-//	    }
-//	});
-		// force the field to be numeric only
+		// Grid Height TextBox
+		TextField gridHeight = createTextField(parameters, "Grid Height:",Integer.toString(numRows));
 		gridHeight.textProperty().addListener(new ChangeListener<String>() {
-		    @Override
-		    public void changed(ObservableValue<? extends String> observable, String oldValue, 
-		        String newValue) {
-//		        if (!newValue.matches("\\d*")) {
-//		        	gridHeight.setText(newValue.replaceAll("[^\\d]", ""));
-//		        }
-		    	numRows = Integer.parseInt(gridHeight.getText()) + 2;
-		    	System.out.println("Rows: " + numRows);
-
-		    }
-		});
-		//Button dfsButton = new Button("");
-//		gridHeight.setOnAction(value ->  {
-//			System.out.println(value);
-			
-
-			//controller.startSearch("DFS");
-//		});
-		searches.getChildren().add(gridHeight);
-
-		TextField gridWidth = new TextField("Grid Width: " + numCols);
-		gridWidth.textProperty().addListener(new ChangeListener<String>() {
-		    @Override
-		    public void changed(ObservableValue<? extends String> observable, String oldValue, 
-		        String newValue) {
-//		        if (!newValue.matches("\\d*")) {
-//		        	gridWidth.setText(newValue.replaceAll("[^\\d]", ""));
-//		        }
-		        numCols = Integer.parseInt(gridWidth.getText()) + 2;
-		    	System.out.println("Cols: " + numCols);
-
-		    }
-		});
-		//Button bfsButton = new Button("Breadth-First Search");
-//		gridWidth.setOnAction(value ->  {
-//			System.out.println(value);
-//			//controller.startSearch("BFS");
-//		});
-		searches.getChildren().add(gridWidth);
-
-		TextField burnTime = new TextField("Burn Time: " + userBurnTime);
-		burnTime.textProperty().addListener(new ChangeListener<String>() {
-		    @Override
-		    public void changed(ObservableValue<? extends String> observable, String oldValue, 
-		        String newValue) {
-//		        if (!newValue.matches("\\d*")) {
-//		        	burnTime.setText(newValue.replaceAll("[^\\d]", ""));
-//		        }
-		    	userBurnTime = Double.parseDouble(burnTime.getText());
+			@Override
+			public void changed(ObservableValue<? extends String> observable, String oldValue,
+				      String newValue) {
+				numRows = Integer.parseInt(gridHeight.getText());
+		    	System.out.println(numRows);
+			}
+			});
+		
+		
+		// Grid Width TextBox
+    	TextField gridWidth = createTextField(parameters, "Grid Width:",Integer.toString(numCols));
+    	gridWidth.textProperty().addListener(new ChangeListener<String>() {
+			@Override
+			public void changed(ObservableValue<? extends String> observable, String oldValue,
+				      String newValue) {
+				numCols = Integer.parseInt(gridWidth.getText());
+		    	System.out.println(numCols);
+			}
+			});
+    	
+    	// Burn Time TextBox
+    	TextField burnTimeLabel = createTextField(parameters, "Burn Time:",Double.toString(userBurnTime));
+    	burnTimeLabel.textProperty().addListener(new ChangeListener<String>() {
+			@Override
+			public void changed(ObservableValue<? extends String> observable, String oldValue,
+				      String newValue) {
+				userBurnTime = Double.parseDouble(burnTimeLabel.getText());
 		    	System.out.println(userBurnTime);
-
-		    }
-		});
-		//Button greedyButton = new Button("Greedy");
-//		burnTime.setOnAction(value ->  {
-//			userBurnTime = Double.parseDouble(burnTime.getText());
-			//controller.startSearch("Greedy");
-//		});
-		searches.getChildren().add(burnTime);
-
-		TextField spreadProb = new TextField("Spread Probability: " + userSpreadProb);
-		spreadProb.textProperty().addListener(new ChangeListener<String>() {
-		    @Override
-		    public void changed(ObservableValue<? extends String> observable, String oldValue, 
-		        String newValue) {
-//		        if (!newValue.matches("\\d*")) {
-//		        	spreadProb.setText(newValue.replaceAll("[^\\d]", ""));
-//		        }
-		    	userSpreadProb = Double.parseDouble(spreadProb.getText());
+			}
+			});
+		
+		// Spread Probability TextBox
+    	TextField spreadProb = createTextField(parameters, "Spread Probability:",Double.toString(userSpreadProb));
+    	spreadProb.textProperty().addListener(new ChangeListener<String>() {
+			@Override
+			public void changed(ObservableValue<? extends String> observable, String oldValue,
+				      String newValue) {
+				userSpreadProb = Double.parseDouble(burnTimeLabel.getText());
 		    	System.out.println(userSpreadProb);
+			}
+			});
 
-		    }
-		});
-		//Button randButton = new Button("Random Walk");
-//		spreadProb.setOnAction(value ->  {
-			//userSpreadProb = Double.parseDouble(spreadProb.getText());
-//			controller.getBurnProbability();
-			//controller.startSearch("RandomWalk");
-//		});
-		searches.getChildren().add(spreadProb);
-		
-		TextField forestDensity = new TextField("Forest Density: " + userForestDensity);
-		forestDensity.textProperty().addListener(new ChangeListener<String>() {
-		    @Override
-		    public void changed(ObservableValue<? extends String> observable, String oldValue, 
-		        String newValue) {
-//		        if (!newValue.matches("\\d*")) {
-//		        	forestDensity.setText(newValue.replaceAll("[^\\d]", ""));
-//		        }
-		    	userForestDensity = Double.parseDouble(forestDensity.getText());
+		// Forest Density TextBox
+    	TextField forestDensity = createTextField(parameters, "Forest Density:",Double.toString(userForestDensity));
+    	forestDensity.textProperty().addListener(new ChangeListener<String>() {
+			@Override
+			public void changed(ObservableValue<? extends String> observable, String oldValue,
+				      String newValue) {
+				userForestDensity = Double.parseDouble(forestDensity.getText());
 		    	System.out.println(userForestDensity);
+			}
+			});
 
-		    }
-		});
-		//Button magicButton = new Button("Magic!");
-//		forestDensity.setOnAction(value ->  {
-//			userForestDensity = Double.parseDouble(forestDensity.getText());
-//			System.out.println(userForestDensity);
-//			//controller.startSearch("Magic");
-//		});
-		searches.getChildren().add(forestDensity);
 		
-		TextField numBurningTrees = new TextField("# of Burning Trees");
+		// Number of Burning Trees TextBox
+		TextField numBurningTrees = createTextField(parameters, "# Burn Trees",Integer.toString(userNumBurningTrees));
 		numBurningTrees.textProperty().addListener(new ChangeListener<String>() {
-		    @Override
-		    public void changed(ObservableValue<? extends String> observable, String oldValue, 
-		        String newValue) {
-//		        if (!newValue.matches("\\d*")) {
-//		        	numBurningTrees.setText(newValue.replaceAll("[^\\d]", ""));
-//		        }
-		    	userNumBurningTrees = Integer.parseInt((numBurningTrees.getText()));
+			@Override
+			public void changed(ObservableValue<? extends String> observable, String oldValue,
+				      String newValue) {
+				userNumBurningTrees = Integer.parseInt(numBurningTrees.getText());
 		    	System.out.println(userNumBurningTrees);
-		    }
-		});
-		//Button magicButton = new Button("Magic!");
-//		numBurningTrees.setOnAction(value ->  {
-//			userNumBurningTrees = Integer.parseInt((numBurningTrees.getText()));
-			//controller.startSearch("Magic");
-//		});
-		searches.getChildren().add(numBurningTrees);
-		return searches;
+			}
+			});
+		return parameters;
 	}
 
 	public Point getMazeDimensions() {
@@ -364,5 +305,17 @@ public class ForestDisplay extends Application {
 			
 		}
 		
+	}
+	
+	private TextField createTextField(HBox parameters , String label, String value) {
+		Label title = new Label(label);
+		TextField textBox = new TextField(value);
+		textBox.setPrefColumnCount(4);
+		parameters.getChildren().addAll(title, textBox);
+		
+			
+		
+		return textBox;
+
 	}
 }
