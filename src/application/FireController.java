@@ -27,10 +27,6 @@ public class FireController extends Controller{
 		return burnTime;
 	}
 	
-	public Color getCellState(Point point) {
-		return model.getState(point).getColor();
-	}
-	
 	public double getBurnProbability() {
 		return spreadProb;
 	}

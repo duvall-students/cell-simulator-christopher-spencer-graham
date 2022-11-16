@@ -363,5 +363,6 @@ public class ForestDisplay extends Application {
 			doOneStep(elapsedTime);
 			
 		}
+		
 	}
 }
