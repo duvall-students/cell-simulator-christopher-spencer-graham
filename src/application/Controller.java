@@ -2,6 +2,8 @@ package application;
 
 import java.awt.Point;
 
+import javafx.scene.paint.Color;
+
 public abstract class Controller {
 	
 	protected Model model;
@@ -19,5 +21,8 @@ public abstract class Controller {
 				model.changeState(cellPosition, model.getState(cellPosition).act(cellPosition, totalElapsedTime));
 			}
 		}
+	}
+	public Color getCellState(Point point) {
+		return model.getState(point).getColor();
 	}
 }
