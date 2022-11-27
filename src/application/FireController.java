@@ -3,23 +3,23 @@ import java.awt.Point;
 
 import javafx.scene.paint.Color;
 
-public class FireController {
+public class FireController extends Controller{
 
-	private FireModel fireModel;
-	private ForestDisplay forestDisplay;
+
 	private double burnTime;
 	private double spreadProb;
-	private double totalElapsedTime = 0;
+
 	
-	public FireController(int numRows, int numCols, double forestDensity, int numBurningTrees, double userBurnTime, double userSpreadProb, ForestDisplay forestDisplay) {
-		fireModel = new FireModel(numRows, numCols, forestDensity, numBurningTrees, this);
-		this.forestDisplay = forestDisplay;
+	public FireController(int numRows, int numCols, double forestDensity, int numBurningTrees, double userBurnTime, double userSpreadProb) {
+		super();
+		model = new FireModel(numRows, numCols, forestDensity, numBurningTrees, this);
 		burnTime = userBurnTime;
 		spreadProb = userSpreadProb;
 	}
 	
 	public void newForest(int numRows, int numCols, int numBurningTrees, double forestDensity) {
-		fireModel.createForest(numRows, numCols, numBurningTrees, forestDensity);
+		
+		((FireModel) model).createForest(numRows, numCols, numBurningTrees, forestDensity);
 		//forestDisplay.redraw();
 	}
 	
@@ -27,22 +27,11 @@ public class FireController {
 		return burnTime;
 	}
 	
-	public Color getCellState(Point point) {
-		return fireModel.getState(point).getColor();
-	}
+
 	
 	public double getBurnProbability() {
 		return spreadProb;
 	}
-	
-	public void doOneStep(double elapsedTime) {
-		totalElapsedTime += elapsedTime;
-		for(int x = 0; x < fireModel.getNumRows(); x++) {
-			for(int y = 0; y < fireModel.getNumCols(); y++) {
-				Point cellPosition = new Point(x,y);
-				fireModel.treeChangeState(cellPosition, fireModel.getState(cellPosition).act(cellPosition, totalElapsedTime));
-			}
-		}
-	}
+
 	
 }
