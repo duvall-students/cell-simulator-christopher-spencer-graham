@@ -51,11 +51,24 @@ public abstract class CellState {
 	 */
 	public Collection<CellState> getNeighbors(Point cellPosition) {
 		List<CellState> cellNeighbors = new ArrayList<>();
-		cellNeighbors.add(fireModel.getState(new Point(cellPosition.x+1,cellPosition.y)));
-		cellNeighbors.add(fireModel.getState(new Point(cellPosition.x-1,cellPosition.y)));
-		cellNeighbors.add(fireModel.getState(new Point(cellPosition.x,cellPosition.y+1)));
-		cellNeighbors.add(fireModel.getState(new Point(cellPosition.x,cellPosition.y-1)));
+		Point north = new Point(cellPosition.x,cellPosition.y+1);
+		Point south = new Point(cellPosition.x,cellPosition.y-1);
+		Point east = new Point(cellPosition.x+1,cellPosition.y);
+		Point west = new Point(cellPosition.x-1,cellPosition.y);
+		
+		addToNeighborsIfValid(north, cellNeighbors);
+		addToNeighborsIfValid(south, cellNeighbors);
+		addToNeighborsIfValid(east, cellNeighbors);
+		addToNeighborsIfValid(west, cellNeighbors);
 		return cellNeighbors;
+	}
+	
+	private Collection<CellState> addToNeighborsIfValid(Point direction, Collection<CellState> neighbors) {
+		CellState state = fireModel.getState(direction);
+		if(state != null) {
+			neighbors.add(state);
+		}
+		return neighbors;
 	}
 
 }
