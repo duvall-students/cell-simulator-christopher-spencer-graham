@@ -20,7 +20,7 @@ public class TestCellState {
 	private double forestDensity = 1;
 	private int numBurningTrees = 1;
 	private double burnTime = 1.0;
-	private double spreadProb = 0.4;
+	private double spreadProb = 1;
 	
 	
 	@Test
@@ -81,10 +81,31 @@ public class TestCellState {
 		LiveTreeState live = new LiveTreeState(model, controller);
 		Collection<CellState> burningTrees = new ArrayList<>();
 		burningTrees.add(new BurningState(model, controller, 0));
-		
-		
+		double avg = testLiveTrees(live, burningTrees);
+		//check if the average of the tests is within a certain tolerance of the spreadProb
+		assert(equals(avg, spreadProb));
+	}
+	
+//	@Test
+//	public void testLiveTreeStatesTwoBurningNeighbor() {
+//		//controller and model dont matter for the test so just make a random one of each
+//		FireController controller = new FireController(numRows , numCols, forestDensity, numBurningTrees, burnTime, spreadProb);
+//		FireModel model = new FireModel(numRows, numCols, forestDensity, numBurningTrees, controller);
+//		//make a new liveTree and a new burning tree
+//		LiveTreeState live = new LiveTreeState(model, controller);
+//		Collection<CellState> burningTrees = new ArrayList<>();
+//		burningTrees.add(new BurningState(model, controller, 0));
+//		burningTrees.add(new BurningState(model, controller, 0));
+//		double avg = testLiveTrees(live, burningTrees);
+//		//check if the average of the tests is within a certain tolerance of the spreadProb
+//		System.out.println(avg);
+//		assert(equals(avg, spreadProb*2));
+//	}
+	
+	public double testLiveTrees(LiveTreeState live, Collection<CellState> burningTrees) {
 		int numTests = 1000;
 		double[] testResults = new double[numTests];
+		//each test will run testSize number of times
 		int testSize = 1000;
 		
 		//get the probability of spreading from each test then average all of them
@@ -97,11 +118,7 @@ public class TestCellState {
 		}
 		double avg = sum/testResults.length;
 		//System.out.println(avg);
-		
-		//check if the average of the tests is within a certain tolerance of the spreadProb
-		assert(equals(avg, spreadProb));
-		
-		
+		return avg;
 	}
 	
 	private int liveTreeTestHelper(LiveTreeState live, Collection<CellState> burningTrees, int testSize) {

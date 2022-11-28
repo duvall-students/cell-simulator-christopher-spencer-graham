@@ -22,7 +22,8 @@ import javafx.stage.Stage;
 import javafx.util.Duration;
 
 public abstract class Display extends Application{
-	protected final int MILLISECOND_DELAY = 1000;	// speed of animation
+    public static final int FRAMES_PER_SECOND = 60;
+    public static final int MILLISECOND_DELAY = 10000 / FRAMES_PER_SECOND;
 
 	protected final int EXTRA_VERTICAL = 100; 	// GUI area allowance when making the scene width
 	protected final int EXTRA_HORIZONTAL = 150; 	// GUI area allowance when making the scene width
@@ -129,6 +130,7 @@ public abstract class Display extends Application{
 		Button newFireButton = new Button("New Simulation");
 		newFireButton.setOnAction(value ->  {
 			animation.stop();
+			initializeVariables();
 			createNewSimulation();
 			redraw();
 			paused = false;

@@ -27,6 +27,7 @@ public class LiveTreeState extends CellState {
 	
 	public CellState act(Point myPosition, double elapsedTime, Collection<CellState> neighbors) {
 		this.color = GREEN;
+		//System.out.println(neighbors);
 		Random random = new Random();
 		for(CellState c : neighbors) {
 			if(c instanceof BurningState) {
