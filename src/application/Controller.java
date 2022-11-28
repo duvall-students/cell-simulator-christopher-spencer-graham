@@ -2,6 +2,7 @@ package application;
 
 import java.awt.Point;
 
+import cell_states.CellState;
 import javafx.scene.paint.Color;
 
 public abstract class Controller {
@@ -24,6 +25,10 @@ public abstract class Controller {
 	}
   
 	public Color getCellStateColor(Point point) {
-		return model.getState(point).getColor();
+		return getCellState(point).getColor();
+	}
+	
+	public CellState getCellState(Point point) {
+		return model.getState(point);
 	}
 }
