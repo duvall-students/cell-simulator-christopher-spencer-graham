@@ -30,7 +30,7 @@ public class LiveTreeState extends CellState {
 		Random random = new Random();
 		for(CellState c : neighbors) {
 			if(c instanceof BurningState) {
-				if(fireController.getBurnProbability() < random.nextDouble()) {
+				if(fireController.getBurnProbability() > random.nextDouble()) {
 					return new BurningState(fireModel, fireController, elapsedTime);
 				}
 			}

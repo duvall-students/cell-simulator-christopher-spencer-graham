@@ -8,6 +8,8 @@ import application.FireModel;
 import static org.junit.Assert.*;
 
 import java.awt.Point;
+import java.util.ArrayList;
+import java.util.Collection;
 
 import cell_states.*;
 
@@ -71,9 +73,61 @@ public class TestCellState {
 	
 	
 	@Test
-	public void testLiveTreeStates() {
+	public void testLiveTreeStatesOneBurningNeighbor() {
+		//controller and model dont matter for the test so just make a random one of each
+		FireController controller = new FireController(numRows , numCols, forestDensity, numBurningTrees, burnTime, spreadProb);
+		FireModel model = new FireModel(numRows, numCols, forestDensity, numBurningTrees, controller);
+		//make a new liveTree and a new burning tree
+		LiveTreeState live = new LiveTreeState(model, controller);
+		Collection<CellState> burningTrees = new ArrayList<>();
+		burningTrees.add(new BurningState(model, controller, 0));
+		
+		
+		int numTests = 1000;
+		double[] testResults = new double[numTests];
+		int testSize = 1000;
+		
+		//get the probability of spreading from each test then average all of them
+		for(int i = 0; i < testResults.length; i++) {
+			testResults[i] = liveTreeTestHelper(live, burningTrees, testSize)/(double)testSize;
+		}
+		double sum = 0;
+		for(int i = 0; i < testResults.length; i++) {
+			sum += testResults[i];
+		}
+		double avg = sum/testResults.length;
+		//System.out.println(avg);
+		
+		//check if the average of the tests is within a certain tolerance of the spreadProb
+		assert(equals(avg, spreadProb));
+		
 		
 	}
+	
+	private int liveTreeTestHelper(LiveTreeState live, Collection<CellState> burningTrees, int testSize) {
+		int numTrues = 0;
+		
+		for(int i = 0; i <= testSize; i++) {
+			CellState newCell = live.act(new Point(0,0), 0, burningTrees);
+			if(newCell instanceof BurningState) {
+				numTrues++;
+			}
+		}
+		return numTrues;
+	}
+	
+	/**
+	 * equals method for checking small differences taken from
+	 * http://www.java2s.com/Tutorials/Java/Data_Type/Double/Check_if_two_double_values_are_almost_equal_in_Java.htm
+	 */
+	private final double EPSILON = 0.01;
+	
+	/** Compare two doubles, using default epsilon */
+	  public boolean equals(double a, double b) {
+	    if (a==b) return true;
+	    // If the difference is less than epsilon, treat as equal.
+	    return Math.abs(a - b) < EPSILON * Math.max(Math.abs(a), Math.abs(b));
+	  }
 	
 	
 	
