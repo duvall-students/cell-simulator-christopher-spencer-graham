@@ -4,6 +4,7 @@ import org.junit.*;
 import static org.junit.Assert.*;
 
 import java.awt.Point;
+import java.util.Arrays;
 
 import application.FireController;
 import application.FireModel;
@@ -22,8 +23,7 @@ public class TestMVC {
 	protected Color[][] originalGrid;
 	protected Color[][] newGrid;
 	
-	@Test
-	public void testStep() {
+	public boolean testStep() {
 		
 		rows = 4;
 		columns = 4;
@@ -38,7 +38,7 @@ public class TestMVC {
 		for (int i = 0; i < rows; i++) {
 			for (int j = 0; j < columns; j++) {
 				originalGrid[i][j] = fireController.getCellState(new Point(i, j));
-				System.out.println(fireController.getCellState(new Point(i, j)));
+//				System.out.println(fireController.getCellState(new Point(i, j)));
 			}
 		}
 		
@@ -49,21 +49,35 @@ public class TestMVC {
 				newGrid[i][j] = fireController.getCellState(new Point(i, j));
 			}
 		}
-//		ReadDataTestCase test = new ReadDataTestCase();
-//		ArrayList<String> dataFiles = new ArrayList<String>();
-//		dataFiles.add("yob1890.txt");
-//		dataFiles.add("yob1891.txt");
-//		dataFiles.add("yob1892.txt");
-//		ArrayList<String> frequency = new ArrayList<String>();
-//		ArrayList<String> rank = new ArrayList<String>();
-//		ArrayList<String> name = new ArrayList<String>();
-//		ArrayList<Integer> year = new ArrayList<Integer>();
-//		ArrayList<String> gender = new ArrayList<String>();
-//		test.loopThroughtDataFiles(dataFiles, gender, name, rank, frequency, year);
-//		ArrayList<String> userInputs = new ArrayList<String>();
-//		userInputs.add("Y");
-//		userInputs.add("hello");
-		assertEquals(originalGrid, newGrid);
+		
+//		for (int i = 0; i < rows; i++) {
+//			for (int j = 0; j < columns; j++) {
+//				if ((originalGrid[i][j]).equals(newGrid[i][j])) {
+//					System.out.println(i + j);
+//				}
+//				
+//			}
+//		}
+		
+		if (Arrays.deepEquals(originalGrid, newGrid)) {
+			return true;
+		}
+		else {
+			return false;
+		}
+	}
+
+	@Test
+	public void TestMVCRepeatably() {
+		int timesSuccess = 0;
+	    for (int i = 0; i < 10000; i++) {
+	        boolean result = testStep();
+	    	if (result) {
+	        	timesSuccess += 1;
+	        }
+	    }
+	    System.out.println(timesSuccess);
+	    assertEquals(timesSuccess,1600,1);
 	}
 
 }
