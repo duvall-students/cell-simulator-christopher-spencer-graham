@@ -299,6 +299,7 @@ public class ForestDisplay  extends Display{
 	/*
 	 * Does a step in the search only if not paused.
 	 */
+
 //	public void step(double elapsedTime){
 //		if(!paused) {
 //			doOneStep(elapsedTime);
