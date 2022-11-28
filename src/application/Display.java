@@ -22,7 +22,8 @@ import javafx.stage.Stage;
 import javafx.util.Duration;
 
 public abstract class Display extends Application{
-	protected final int MILLISECOND_DELAY = 1000;	// speed of animation
+    public static final int FRAMES_PER_SECOND = 60;
+    public static final int MILLISECOND_DELAY = 10000 / FRAMES_PER_SECOND;
 
 	protected final int EXTRA_VERTICAL = 100; 	// GUI area allowance when making the scene width
 	protected final int EXTRA_HORIZONTAL = 150; 	// GUI area allowance when making the scene width
@@ -58,7 +59,7 @@ public abstract class Display extends Application{
 		for(int i = 0; i< numRows; i++){
 			for(int j =0; j < numCols; j++){
 				Rectangle rect = new Rectangle(j*BLOCK_SIZE, i*BLOCK_SIZE, BLOCK_SIZE, BLOCK_SIZE);
-				rect.setFill(controller.getCellState(new Point(i,j)));
+				rect.setFill(controller.getCellStateColor(new Point(i,j)));
 				mirrorObjects[i][j] = rect;
 				drawing.getChildren().add(rect);
 			}	
@@ -88,7 +89,7 @@ public abstract class Display extends Application{
 		for(int i = 0; i< mirrorObjects.length; i++){
 			for(int j =0; j < mirrorObjects[i].length; j++){
 				//System.out.println("i = " + i + " j = " + j + " color = " + controller.getCellState(new Point(i,j)));
-				mirrorObjects[i][j].setFill(controller.getCellState(new Point(i,j)));
+				mirrorObjects[i][j].setFill(controller.getCellStateColor(new Point(i,j)));
 			}
 		}
 	}
@@ -129,6 +130,7 @@ public abstract class Display extends Application{
 		Button newFireButton = new Button("New Simulation");
 		newFireButton.setOnAction(value ->  {
 			animation.stop();
+			initializeVariables();
 			createNewSimulation();
 			redraw();
 			paused = false;

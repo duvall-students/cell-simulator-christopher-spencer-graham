@@ -49,13 +49,26 @@ public abstract class CellState {
 	 * @param cellPosition a point that says where the cell is in a 2D grid of cells
 	 * @return cellNeighbors a list of cellPosistions that are neighbors to this
 	 */
-	public Collection<Point> getNeighbors(Point cellPosition) {
-		List<Point> cellNeighbors = new ArrayList<>();
-		cellNeighbors.add(new Point(cellPosition.x+1,cellPosition.y));
-		cellNeighbors.add(new Point(cellPosition.x-1,cellPosition.y));
-		cellNeighbors.add(new Point(cellPosition.x,cellPosition.y+1));
-		cellNeighbors.add(new Point(cellPosition.x,cellPosition.y-1));
+	public Collection<CellState> getNeighbors(Point cellPosition) {
+		List<CellState> cellNeighbors = new ArrayList<>();
+		Point north = new Point(cellPosition.x,cellPosition.y+1);
+		Point south = new Point(cellPosition.x,cellPosition.y-1);
+		Point east = new Point(cellPosition.x+1,cellPosition.y);
+		Point west = new Point(cellPosition.x-1,cellPosition.y);
+		
+		addToNeighborsIfValid(north, cellNeighbors);
+		addToNeighborsIfValid(south, cellNeighbors);
+		addToNeighborsIfValid(east, cellNeighbors);
+		addToNeighborsIfValid(west, cellNeighbors);
 		return cellNeighbors;
+	}
+	
+	private Collection<CellState> addToNeighborsIfValid(Point direction, Collection<CellState> neighbors) {
+		CellState state = fireModel.getState(direction);
+		if(state != null) {
+			neighbors.add(state);
+		}
+		return neighbors;
 	}
 
 }

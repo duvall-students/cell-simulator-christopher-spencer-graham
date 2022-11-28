@@ -82,9 +82,13 @@ public class ForestDisplay  extends Display{
 		userSpreadProb = 0.4;
 		simulationTitle = "Forest Fires";
 		
+		resetFireController();
+	}
+	
+	protected void resetFireController() {
 		//Make FireController
 		controller = new FireController(numRows,numCols, userForestDensity, userNumBurningTrees, userBurnTime, userSpreadProb);
-		
+				
 	}
 	
 //	private void createNewSimulation() {
@@ -132,6 +136,7 @@ public class ForestDisplay  extends Display{
 		Button newFireButton = new Button("New Simulation");
 		newFireButton.setOnAction(value ->  {
 			animation.stop();
+			resetFireController();
 			((FireController)controller).newForest(numRows, numCols, userNumBurningTrees, userForestDensity);
 			createNewSimulation();
 			redraw();
@@ -231,6 +236,7 @@ public class ForestDisplay  extends Display{
 			});
 		return parameters;
 	}
+	
 //
 //	public Point getMazeDimensions() {
 //		return new Point(numRows, numCols);

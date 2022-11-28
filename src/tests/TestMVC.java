@@ -37,7 +37,7 @@ public class TestMVC {
 
 		for (int i = 0; i < rows; i++) {
 			for (int j = 0; j < columns; j++) {
-				originalGrid[i][j] = fireController.getCellState(new Point(i, j));
+				originalGrid[i][j] = fireController.getCellStateColor(new Point(i, j));
 //				System.out.println(fireController.getCellState(new Point(i, j)));
 			}
 		}
@@ -46,7 +46,7 @@ public class TestMVC {
 		
 		for (int i = 0; i < rows; i++) {
 			for (int j = 0; j < columns; j++) {
-				newGrid[i][j] = fireController.getCellState(new Point(i, j));
+				newGrid[i][j] = fireController.getCellStateColor(new Point(i, j));
 			}
 		}
 		
