@@ -27,6 +27,7 @@ public class FireController extends Controller{
 		return burnTime;
 	}
 	
+  
 	public double getBurnProbability() {
 		return spreadProb;
 	}
