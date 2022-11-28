@@ -21,18 +21,15 @@ public class LiveTreeState extends CellState {
 
 	@Override
 	public CellState act(Point myPosition, double elapsedTime) {
-		Random random = new Random();
+		Collection<CellState> neighbors = getNeighbors(myPosition);
+		return act(myPosition, elapsedTime, neighbors);
+	}
+	
+	public CellState act(Point myPosition, double elapsedTime, Collection<CellState> neighbors) {
 		this.color = GREEN;
-		Collection<Point> neighbors = getNeighbors(myPosition);
-		for(Point c : neighbors) {
-			BurningState possibleBurningState = null;
-			try {
-				possibleBurningState = (BurningState) fireModel.getState(c);
-			}
-			catch(ClassCastException|ArrayIndexOutOfBoundsException e) {
-				continue;
-			}
-			if(possibleBurningState != null) {
+		Random random = new Random();
+		for(CellState c : neighbors) {
+			if(c instanceof BurningState) {
 				if(fireController.getBurnProbability() < random.nextDouble()) {
 					return new BurningState(fireModel, fireController, elapsedTime);
 				}

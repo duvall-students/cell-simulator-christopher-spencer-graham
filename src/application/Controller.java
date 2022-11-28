@@ -19,9 +19,13 @@ public abstract class Controller {
 		for(int x = 0; x < model.getNumRows(); x++) {
 			for(int y = 0; y < model.getNumCols(); y++) {
 				Point cellPosition = new Point(x,y);
-				model.changeState(cellPosition, model.getState(cellPosition).act(cellPosition, totalElapsedTime));
+				updateCellState(cellPosition, model.getState(cellPosition).act(cellPosition, totalElapsedTime));
 			}
 		}
+	}
+	
+	public void updateCellState(Point cellPosition, CellState state) {
+		model.changeState(cellPosition, state);
 	}
   
 	public Color getCellStateColor(Point point) {

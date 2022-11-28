@@ -231,6 +231,7 @@ public class ForestDisplay  extends Display{
 			});
 		return parameters;
 	}
+	
 //
 //	public Point getMazeDimensions() {
 //		return new Point(numRows, numCols);
