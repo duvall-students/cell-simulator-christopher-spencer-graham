@@ -58,7 +58,7 @@ public abstract class Display extends Application{
 		for(int i = 0; i< numRows; i++){
 			for(int j =0; j < numCols; j++){
 				Rectangle rect = new Rectangle(j*BLOCK_SIZE, i*BLOCK_SIZE, BLOCK_SIZE, BLOCK_SIZE);
-				rect.setFill(controller.getCellState(new Point(i,j)));
+				rect.setFill(controller.getCellStateColor(new Point(i,j)));
 				mirrorObjects[i][j] = rect;
 				drawing.getChildren().add(rect);
 			}	
@@ -88,7 +88,7 @@ public abstract class Display extends Application{
 		for(int i = 0; i< mirrorObjects.length; i++){
 			for(int j =0; j < mirrorObjects[i].length; j++){
 				//System.out.println("i = " + i + " j = " + j + " color = " + controller.getCellState(new Point(i,j)));
-				mirrorObjects[i][j].setFill(controller.getCellState(new Point(i,j)));
+				mirrorObjects[i][j].setFill(controller.getCellStateColor(new Point(i,j)));
 			}
 		}
 	}

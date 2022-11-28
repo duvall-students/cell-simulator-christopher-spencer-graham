@@ -23,7 +23,7 @@ public abstract class Controller {
 		}
 	}
   
-	public Color getCellState(Point point) {
+	public Color getCellStateColor(Point point) {
 		return model.getState(point).getColor();
 	}
 }
