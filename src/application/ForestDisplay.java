@@ -202,7 +202,7 @@ public class ForestDisplay  extends Display{
 			@Override
 			public void changed(ObservableValue<? extends String> observable, String oldValue,
 				      String newValue) {
-				userSpreadProb = Double.parseDouble(spreadProb.getText());
+				userSpreadProb = Double.parseDouble(burnTimeLabel.getText());
 		    	System.out.println(userSpreadProb);
 			}
 			});

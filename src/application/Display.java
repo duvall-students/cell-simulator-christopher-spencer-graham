@@ -215,7 +215,7 @@ public abstract class Display extends Application{
 
 	}
 	
-	public Point getMazeDimensions() {
+	public Point getModelDimensions() {
 		return new Point(numRows, numCols);
 	}
 }
